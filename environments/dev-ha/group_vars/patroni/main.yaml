@@ -1,0 +1,8 @@
+---
+patroni_hosts:
+  - address: 192.168.56.21
+    netmask: 24
+  - address: 192.168.56.22
+    netmask: 24
+  - address: 192.168.56.23
+    netmask: 24

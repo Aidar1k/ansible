@@ -1,0 +1,3 @@
+---
+app_ip: "{{ ansible_host }}"
+nginx_user: www-data

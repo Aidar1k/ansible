@@ -1,0 +1,3 @@
+---
+etcd_secure: False
+postgresql_version: 12

@@ -1,0 +1,7 @@
+---
+backend_app_user: vagrant
+backend_app_dist: /srv/backend
+backend_app_version: latest
+backend_app_url: http://{{ username_backand_token }}:{{ backend_token }}@gitlab.simbirsoft/internships/devops/sandbox/aidar.rahmatullin/backend.git
+
+app_venv_dist: /home/{{ backend_app_user }}/appvenv

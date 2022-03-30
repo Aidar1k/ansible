@@ -1,0 +1,48 @@
+---
+- name: Initialize the deploy root and gather facts
+  deploy_helper:
+    path: "{{ backend_app_dist }}"
+
+- name: Clone backend
+  git:
+    repo: "{{ backend_app_url }}"
+    dest: "{{ deploy_helper.new_release_path }}"
+    force: yes
+    version: "{{ backend_app_version }}"
+
+- name: Add an unfinished file, to allow cleanup on successful finalize
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}"
+    state: touch
+    mode: 0644
+
+- include_tasks: install_ubuntu.yaml
+  when: ansible_os_family == "Debian"
+
+- include_tasks: install_centos.yaml
+  when: ansible_os_family == "RedHat"
+
+- include_tasks: app_provision.yaml
+
+- name: Create some folders in the shared folder
+  file:
+    path: "{{ deploy_helper.shared_path }}/upload"
+    state: directory
+    mode: 0644
+
+- name: Add symlinks from the new release to the shared folder
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ item.path }}"
+    src: "{{ deploy_helper.shared_path }}/{{ item.src }}"
+    state: link
+  loop:
+    - path: upload
+      src: upload
+
+- name: Finalize the deploy, removing the unfinished file and switching the symlink
+  deploy_helper:
+    path: "{{ backend_app_dist }}"
+    release: "{{ deploy_helper.new_release }}"
+    state: finalize
+  notify:
+    - Restart backend.service

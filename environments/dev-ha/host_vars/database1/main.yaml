@@ -1,0 +1,4 @@
+---
+db_name: postgres1
+database1_ip: "{{ ansible_host }}"
+patroni_master: True

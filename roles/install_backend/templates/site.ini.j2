@@ -1,0 +1,11 @@
+[uwsgi]
+module = app:api
+chdir = {{ backend_app_dist }}/current
+home = {{ app_venv_dist }}
+plugins = python3
+max-requests = 5000
+processes = 5
+threads = 2
+master = true
+http = 0.0.0.0:5000
+die-on-term = true

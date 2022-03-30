@@ -1,0 +1,6 @@
+---
+- hosts: dbbalancer
+  become: yes
+
+  roles:
+    - install_dbbalancer

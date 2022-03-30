@@ -1,0 +1,12 @@
+---
+gluster_brick_dir: /srv/gluster/brick
+gluster_mount_dir: /srv/backend/shared/upload
+gluster_brick_name: gluster
+
+hosts:
+  - node: app1
+    ip: 192.168.56.30
+  - node: app2
+    ip: 192.168.56.40
+
+number_of_replicas: 2

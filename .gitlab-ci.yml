@@ -1,0 +1,25 @@
+---
+
+include:
+  - project: shared/gitlab-ci
+    ref: workflow
+    file: workflows/merge-requests.yaml
+  - project: shared/gitlab-ci
+    ref: workflow
+    file: pipelines/ansible.yaml
+
+update_ssl_certs:
+  stage: deploy
+  trigger:
+    include: '.gitlab/ci/update_ssl_certs.yaml'
+    # strategy: depend
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+update_nginx_configs:
+  stage: deploy
+  trigger:
+    include: '.gitlab/ci/update_nginx_configs.yaml'
+    # strategy: depend
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

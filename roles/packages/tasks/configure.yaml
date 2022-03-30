@@ -1,0 +1,25 @@
+---
+
+# - name: set Locale
+#   locale_gen:
+#     name: "{{ item }}"
+#     state: present
+#   loop:
+#     - ru_RU.UTF-8
+#     - en_US.UTF-8
+
+- name: create config file for screen
+  template:
+    src: screenrc.j2
+    dest: /etc/screenrc
+    owner: root
+    group: root
+    mode: 0644
+  when: ('screen' in __main_packages)
+
+- name: ensure atop service is started and enabled on boot
+  service:
+    name: atop
+    state: started
+    enabled: yes
+  when: ('atop' in __main_packages)

@@ -1,0 +1,19 @@
+---
+# common
+- include: "requirements/common.yaml"
+
+# databases
+- include: "requirements/databases.yaml"
+
+# nodejs
+- include: "requirements/nodejs.yaml"
+
+# web servers
+- include: "requirements/nginx.yaml"
+- include: "requirements/haproxy.yaml"
+
+# etcd
+- include: "requirements/etcd.yaml"
+
+# patroni
+- include: "requirements/patroni.yaml"

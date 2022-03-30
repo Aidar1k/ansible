@@ -1,0 +1,23 @@
+---
+- name: Install properties
+  apt:
+    name:
+      - software-properties-common
+
+- name: Add glusterfs repository from PPA
+  ansible.builtin.apt_repository:
+    repo: 'ppa:gluster/glusterfs-6'
+
+- name: Apt update
+  apt:
+    update_cache: yes
+
+- name: Install glusterfs
+  apt:
+    name:
+      - glusterfs-server
+
+- name: Enabled glusterfs
+  service:
+    name: glusterd
+    enabled: yes

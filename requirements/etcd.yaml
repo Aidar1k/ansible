@@ -1,0 +1,8 @@
+---
+- name: andrewrothstein.etcd
+  path: vendor/roles
+  version: v2.1.41
+
+- name: andrewrothstein.etcd-cluster
+  path: vendor/roles
+  version: v2.0.0

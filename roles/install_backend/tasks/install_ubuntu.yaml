@@ -1,0 +1,19 @@
+---
+- name: Install python modules
+  apt:
+    name: "{{ backend_ubuntu_packages }}"
+
+- name: Install virtualenv
+  pip:
+    name: virtualenv
+    chdir: "{{ app_venv_dist }}"
+
+- name: Install uwsgi
+  pip:
+    name: uwsgi
+    virtualenv: "{{ app_venv_dist }}"
+
+- name: Install libs
+  pip:
+    requirements: "{{ deploy_helper.new_release_path }}/requirements.txt"
+    virtualenv: "{{ app_venv_dist }}"

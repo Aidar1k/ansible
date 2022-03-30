@@ -1,0 +1,12 @@
+---
+- hosts: etcd_master
+  become: yes
+  pre_tasks:
+    - name: Collect facts
+      set_fact:
+        cacheable: no
+        ansible_default_ipv4:
+          address: "{{ ansible_host }}"
+
+  roles:
+    - role: andrewrothstein.etcd-cluster

@@ -1,0 +1,12 @@
+---
+# haproxy
+database_hosts:
+  - name: database1
+    address: 192.168.56.21:5432
+  - name: database2
+    address: 192.168.56.22:5432
+  - name: database3
+    address: 192.168.56.23:5432
+
+frontend_master_port: 5432
+frontend_slave_port: 5433

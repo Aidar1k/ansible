@@ -1,0 +1,4 @@
+---
+- name: geerlingguy.haproxy
+  path: vendor/roles
+  src: https://github.com/geerlingguy/ansible-role-haproxy.git

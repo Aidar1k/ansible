@@ -1,0 +1,7 @@
+---
+
+- name: restart qemu-guest-agent
+  systemd:
+    daemon_reload: true
+    name: "{{ packages_virtual_machines_qemu_service_name }}"
+    state: restarted

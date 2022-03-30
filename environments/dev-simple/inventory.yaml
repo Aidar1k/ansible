@@ -1,0 +1,47 @@
+---
+all:
+  hosts:
+    pgbouncer:
+      ansible_host: 192.168.56.20
+      ansible_ssh_private_key_file: .vagrant/machines/pgbouncer/virtualbox/private_key
+    postgres1:
+      ansible_host: 192.168.56.21
+      ansible_ssh_private_key_file: .vagrant/machines/postgres1/virtualbox/private_key
+    postgres2:
+      ansible_host: 192.168.56.22
+      ansible_ssh_private_key_file: .vagrant/machines/postgres2/virtualbox/private_key
+    etcd1:
+      ansible_host: 192.168.56.51
+      ansible_ssh_private_key_file: .vagrant/machines/etcd1/virtualbox/private_key
+    petcd2:
+      ansible_host: 192.168.56.52
+      ansible_ssh_private_key_file: .vagrant/machines/etcd2/virtualbox/private_key
+    etcd3:
+      ansible_host: 192.168.56.53
+      ansible_ssh_private_key_file: .vagrant/machines/etcd3/virtualbox/private_key
+    app1:
+      ansible_host: 192.168.56.30
+      ansible_ssh_private_key_file: .vagrant/machines/app1/virtualbox/private_key
+    app2:
+      ansible_host: 192.168.56.40
+      ansible_ssh_private_key_file: .vagrant/machines/app2/virtualbox/private_key
+    haproxy:
+      ansible_host: 192.168.56.10
+      ansible_ssh_private_key_file: .vagrant/machines/haproxy/virtualbox/private_key
+  children:
+    databases:
+      hosts:
+        postgres1:
+        postgres2:
+    etcd:
+      hosts:
+        etcd1:
+        etcd2:
+        etcd3:
+    app:
+      hosts:
+        app1:
+        app2:
+    web_servers:
+      hosts:
+        haproxy:

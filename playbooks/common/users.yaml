@@ -1,0 +1,6 @@
+---
+- hosts: app
+  become: yes
+
+  roles:
+    - mbaran0v.users

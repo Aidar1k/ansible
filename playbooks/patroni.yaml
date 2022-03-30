@@ -1,0 +1,7 @@
+---
+- hosts: patroni
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - role: patroni

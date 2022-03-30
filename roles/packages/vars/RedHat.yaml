@@ -1,0 +1,25 @@
+---
+
+__prepare_packages: []
+
+__main_packages:
+  - yum-utils
+  - libselinux-python
+  - htop
+  - iotop
+  - mc
+  - lsof
+  - ca-certificates
+  - nmap
+  - tcpdump
+  - nmap-ncat
+  - git
+  - wget
+  - zip
+  - unzip
+  - rsync
+  - bind-utils
+  - bash-completion
+  - bash-completion-extras
+  - screen
+  - curl

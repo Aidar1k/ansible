@@ -1,0 +1,7 @@
+---
+app_ip: "{{ ansible_host }}"
+nginx_user: www-data
+
+glusterfs_default_release: "9"
+glusterfs_ppa_use: true
+glusterfs_ppa_version: "9"

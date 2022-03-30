@@ -1,0 +1,15 @@
+---
+- name: Start patroni.service
+  systemd:
+    name: patroni.service
+    state: restarted
+
+- name: Start postgresql.service
+  systemd:
+    name: postgresql.service
+    state: started
+
+- name: Stop postgresql.service
+  systemd:
+    name: postgresql.service
+    state: stopped

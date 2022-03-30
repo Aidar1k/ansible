@@ -1,0 +1,52 @@
+---
+- name: Add nodes in hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }} {{ item.node }}"
+  with_items:
+    - "{{ hosts }}"
+
+- include_tasks: install_ubuntu.yaml
+  when: ansible_os_family == "Debian"
+
+- include_tasks: install_centos.yaml
+  when: ansible_os_family == "RedHat"
+
+- name: Create a trusted storage pool
+  gluster_peer:
+    state: present
+    nodes: "{{ item.node }}"
+  with_items:
+    - "{{ hosts }}"
+
+- name: Ensure Gluster brick and mount directories exist
+  file:
+    path: "{{ item }}"
+    state: directory 
+    mode: 0775
+  with_items:
+         - "{{ gluster_brick_dir }}"
+         - "{{ gluster_mount_dir }}"
+
+- name: Create gluster volume
+  gluster_volume:
+    state: present
+    name: "{{ gluster_brick_name }}"
+    brick: "{{ gluster_mount_dir }}"
+    rebalance: yes
+    replicas: "{{ number_of_replicas }}"
+    cluster: "{{ groups['glusterfs'] }}"
+    force: yes
+  run_once: true
+
+- name: Start gluster volume
+  gluster_volume:
+    state: started
+    name: "{{ gluster_brick_name }}"
+
+- name: Ensure Gluster volume is mounted.
+  mount:
+    name: "{{ gluster_mount_dir }}"
+    src: "{{ inventory_hostname }}:/{{ gluster_brick_name }}"
+    fstype: glusterfs
+    state: mounted

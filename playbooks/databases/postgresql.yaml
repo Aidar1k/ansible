@@ -1,0 +1,8 @@
+---
+- hosts: databases
+  become: yes
+
+  roles:
+ #   - anxs.postgresql
+    - natefoo.postgresql-objects
+    - anxs.postgresql

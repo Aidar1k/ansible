@@ -1,0 +1,21 @@
+---
+
+__prepare_packages: []
+
+__main_packages:
+  - htop
+  - mc
+  - lsof
+  - ca-certificates
+  - nmap
+  - tcpdump
+  - netcat-openbsd
+  - git
+  - wget
+  - zip
+  - unzip
+  - rsync
+  - apt-transport-https
+  - bash-completion
+  - screen
+  - curl

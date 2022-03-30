@@ -1,0 +1,15 @@
+exclude_paths:
+  - .venv/
+  - .gitlab-ci.yml
+  - vendor/roles
+  - roles/debops.swapfile/
+  - roles/torian.strongswan/
+  - pip-cache
+parseable: true
+quiet: true
+skip_list:
+  - skip_ansible_lint
+  - '502'
+  - '106'
+use_default_rules: true
+verbosity: 0

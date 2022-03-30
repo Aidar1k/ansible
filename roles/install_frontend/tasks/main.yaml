@@ -1,0 +1,57 @@
+---
+- name: Initialize the deploy root and gather facts
+  deploy_helper:
+    path: "{{ frontend_app_dist }}"
+
+- name: Clone frontend
+  git:
+    repo: "{{ frontend_app_url }}"
+    dest: "{{ deploy_helper.new_release_path }}"
+    force: yes
+    version: "{{ frontend_app_version }}"
+
+- name: Add an unfinished file, to allow cleanup on successful finalize
+  file:
+    path: "{{ deploy_helper.new_release_path }}/{{ deploy_helper.unfinished_filename }}"
+    state: touch
+    mode: 0644
+
+- name: Fix REACT_APP_API_BASE dev
+  template:
+    src: env.j2
+    dest: "{{ deploy_helper.new_release_path }}/.env.development"
+    owner: "{{ frontend_app_user }}"
+    mode: 0644
+
+- name: Fix REACT_APP_API_BASE prod
+  template:
+    src: env.j2
+    dest: "{{ deploy_helper.new_release_path }}/.env.production"
+    owner: "{{ frontend_app_user }}"
+    mode: 0644
+
+- name: npm install
+  npm:
+    name: install
+    path: "{{ deploy_helper.new_release_path }}"
+
+- name: Build app
+  command: npm run build
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"
+  changed_when: false
+
+- name: Finalize the deploy, removing the unfinished file and switching the symlink
+  deploy_helper:
+    path: "{{ frontend_app_dist }}"
+    release: "{{ deploy_helper.new_release }}"
+    state: finalize
+
+- name: Change file ownership, group and permissions
+  file:
+    path: "{{ frontend_app_dist }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+    recurse: yes
+  notify:
+    - Reload nginx.service

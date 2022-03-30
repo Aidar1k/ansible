@@ -1,0 +1,14 @@
+---
+
+# may be present or latest
+pkg_state: present
+
+extra_packages: []
+
+packages_virtual_machines_base:
+  - acpid
+
+packages_virtual_machines_qemu:
+  - qemu-guest-agent
+
+packages_virtual_machines_qemu_service_name: qemu-guest-agent

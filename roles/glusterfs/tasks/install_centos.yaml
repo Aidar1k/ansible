@@ -1,0 +1,20 @@
+---
+- name: Install gluster6
+  yum:
+    name:
+      - centos-release-gluster6
+
+- name: Install glusterfs
+  yum:
+    name:
+      - glusterfs-server
+
+- name: Enabled glusterfs
+  service:
+    name: glusterd
+    enabled: yes
+
+- name: Start glusterfs
+  service:
+    name: glusterd
+    state: restarted

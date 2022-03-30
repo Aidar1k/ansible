@@ -1,0 +1,69 @@
+---
+
+- name: include OS-specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
+    - "{{ ansible_distribution }}.yaml"
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yaml"
+    - "{{ ansible_os_family }}.yaml"
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: install epel for Amazon Linux
+  command: amazon-linux-extras install epel
+  when: ansible_distribution == "Amazon"
+
+- import_role:
+    name: geerlingguy.repo-epel
+  when: ansible_os_family == "RedHat"
+
+- name: Run the equivalent of "yum makecache" as a separate step
+  yum:
+    update_cache: yes
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution == "Amazon"
+
+- name: install packages
+  package:
+    name: "{{ item }}"
+    state: "{{ pkg_state }}"
+  with_items:
+    - "{{ __prepare_packages }}"
+    - "{{ __main_packages }}"
+    - "{{ extra_packages }}"
+
+- name: install base packages for VM
+  package:
+    name: "{{ packages_virtual_machines_base }}"
+    state: "{{ pkg_state }}"
+  when:
+    - ansible_virtualization_role is defined
+    - ansible_virtualization_role == "guest"
+    - ansible_virtualization_type is defined
+    - ansible_virtualization_type == "kvm"
+
+- block:
+
+    - name: install QEMU packages for VM
+      package:
+        name: "{{ packages_virtual_machines_qemu }}"
+        state: "{{ pkg_state }}"
+      notify: restart qemu-guest-agent
+
+    - name: Ensure qemu-guest-agent is enabled on boot
+      systemd:
+        daemon_reload: true
+        name: "{{ packages_virtual_machines_qemu_service_name }}"
+        enabled: true
+
+  when:
+    - ansible_system_vendor is defined
+    - ansible_system_vendor == "QEMU"
+
+- name: include non OS-specific tasks for create user
+  include: "configure.yaml"

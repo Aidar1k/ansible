@@ -1,0 +1,4 @@
+---
+- name: kostiantyn-nemchenko.patroni
+  path: vendor/roles
+  version: v1.2.0

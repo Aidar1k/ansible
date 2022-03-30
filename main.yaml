@@ -1,0 +1,55 @@
+---
+- import_playbook: playbooks/common/packages.yaml
+  tags:
+    - common
+
+- import_playbook: playbooks/common/users.yaml
+  tags:
+    - users
+    - common
+
+- import_playbook: playbooks/app/nodejs.yaml
+  tags:
+    - nodejs
+    - common
+
+- import_playbook: playbooks/app/nginx.yaml
+  tags:
+    - nginx
+
+- import_playbook: playbooks/common/RedHat_pre_provision.yaml
+  tags:
+    - disfirewall
+    - common
+
+- import_playbook: playbooks/web_servers/haproxy.yaml
+  tags:
+    - haproxy
+
+- import_playbook: playbooks/databases/postgresql.yaml
+  tags:
+    - db
+
+- import_playbook: playbooks/etcd.yaml
+  tags:
+    - etcd
+
+- import_playbook: playbooks/patroni.yaml
+  tags:
+    - patroni
+
+- import_playbook: playbooks/dbbalancer.yaml
+  tags:
+    - dbbalancer
+
+- import_playbook: playbooks/app/backend.yaml
+  tags:
+    - back
+
+- import_playbook: playbooks/app/frontend.yaml
+  tags:
+    - front
+
+- import_playbook: playbooks/glusterfs.yaml
+  tags:
+    - glusterfs

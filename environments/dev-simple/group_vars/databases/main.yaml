@@ -1,0 +1,74 @@
+---
+pgsql_db: app
+
+pgsql_user: worker
+
+pgsql_password: !vault |
+            $ANSIBLE_VAULT;1.2;AES256;app
+            38623130386437633664353061356561303161653565336430353831643435383065366237613332
+            3632353861643536333333643163633763366239663836650a326431306463613237646436356638
+            33386631633463366335313863393831633362326534653138353737633764336166623739613763
+            3965663137393138660a633563616466363237393863623666633064393438326430663637616530
+            3266
+
+postgresql_version: 12
+postgresql_listen_addresses:
+  - "*"
+
+postgresql_pg_hba_custom:
+  - type: host
+    database: "{{ pgsql_db }}"
+    user: "{{ pgsql_user }}"
+    address: "0.0.0.0/0"
+    method: md5
+    comment: 'For all incoming connections'
+
+postgresql_users:
+  - name: "{{ pgsql_user }}"
+    pass: "{{ pgsql_password }}"
+    encrypted: true
+
+postgresql_databases:
+  - name: "{{ pgsql_db }}"
+    owner: "{{ pgsql_user }}"
+    lc_collate: "en_US.utf8"
+    lc_ctype: "en_US.utf8"
+
+postgresql_user_privileges:
+  - name: "{{ pgsql_user }}"
+    db: "{{ pgsql_db }}"
+    priv: "ALL"
+    role_attr_flags: "NOSUPERUSER,NOCREATEDB,NOCREATEROLE,INHERIT,NOREPLICATION"
+
+# WARNING
+# this tool not being optimal
+# for very high memory systems
+
+# DB Version: 12
+# OS Type: linux
+# DB Type: web
+# Total Memory (RAM): 1024 GB
+# CPUs num: 1
+# Connections num: 100
+# Data Storage: hdd
+
+# DB Version: 12
+# OS Type: linux
+# DB Type: web
+# Total Memory (RAM): 1024 MB
+# CPUs num: 1
+# Connections num: 100
+# Data Storage: hdd
+
+postgresql_max_connections: 100
+postgresql_shared_buffers: 256MB
+postgresql_effective_cache_size: 768MB
+postgresql_maintenance_work_mem: 64MB
+postgresql_checkpoint_completion_target: 0.9
+postgresql_postgresql_wal_buffers: 7864kB
+postgresql_default_statistics_target: 100
+postgresql_random_page_cost: 4
+postgresql_effective_io_concurrency: 2
+postgresql_work_mem: 1310kB
+postgresql_min_wal_size: 1GB
+postgresql_max_wal_size: 4GB

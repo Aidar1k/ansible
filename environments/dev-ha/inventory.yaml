@@ -1,0 +1,55 @@
+---
+all:
+  hosts:
+    dbbalancer:
+      ansible_host: 192.168.56.20
+      ansible_ssh_private_key_file: .vagrant/machines/dbbalancer/virtualbox/private_key
+    database1:
+      ansible_host: 192.168.56.21
+      ansible_ssh_private_key_file: .vagrant/machines/database1/virtualbox/private_key
+    database2:
+      ansible_host: 192.168.56.22
+      ansible_ssh_private_key_file: .vagrant/machines/database2/virtualbox/private_key
+    database3:
+      ansible_host: 192.168.56.23
+      ansible_ssh_private_key_file: .vagrant/machines/database3/virtualbox/private_key
+    app1:
+      ansible_host: 192.168.56.30
+      ansible_ssh_private_key_file: .vagrant/machines/app1/virtualbox/private_key
+    app2:
+      ansible_host: 192.168.56.40
+      ansible_ssh_private_key_file: .vagrant/machines/app2/virtualbox/private_key
+    haproxy:
+      ansible_host: 192.168.56.10
+      ansible_ssh_private_key_file: .vagrant/machines/haproxy/virtualbox/private_key
+  children:
+    databases:
+      hosts:
+        database1:
+        database2:
+        database3:
+    etcd_master:
+      hosts:
+        database1:
+        database2:
+        database3:
+    patroni:
+      hosts:
+        database1:
+        database2:
+        database3:
+    patroni_slaves:
+      hosts:
+        database2:
+        database3:
+    app:
+      hosts:
+        app1:
+        app2:
+    web_servers:
+      hosts:
+        haproxy:
+    glusterfs:
+      hosts:
+        app1:
+        app2:

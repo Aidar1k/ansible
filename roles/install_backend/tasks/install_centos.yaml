@@ -1,0 +1,22 @@
+---
+- name: Install modules
+  yum:
+    name: "{{ backend_centos_packages }}"
+
+- name: Install virtualenv
+  pip:
+    name: virtualenv
+    chdir: "{{ app_venv_dist }}"
+    executable: pip3
+    virtualenv_python: python3
+
+- name: Install uwsgi
+  pip:
+    name: uwsgi
+    virtualenv: "{{ app_venv_dist }}"
+    virtualenv_python: python3
+
+- name: Install libs
+  pip:
+    requirements: "{{ deploy_helper.new_release_path }}/requirements.txt"
+    virtualenv: "{{ app_venv_dist }}"

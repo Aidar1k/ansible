@@ -1,0 +1,6 @@
+---
+- hosts: glusterfs
+  become: yes
+
+  roles:
+    - glusterfs

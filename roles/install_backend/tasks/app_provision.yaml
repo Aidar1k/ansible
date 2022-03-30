@@ -1,0 +1,32 @@
+---
+- name: Create site.ini
+  template:
+    src: site.ini.j2
+    dest: "{{ deploy_helper.new_release_path }}/site.ini"
+    owner: "{{ backend_app_user }}"
+    mode: 0644
+
+- name: Set environments and migrate database
+  command: "{{ app_venv_dist }}/bin/flask db upgrade"
+  args:
+    chdir: "{{ deploy_helper.new_release_path }}"
+  environment:
+    POSTGRESQL_URL: "postgresql://{{ app_user_name }}:{{ app_user_pass }}@{{ db_ip }}/{{ db_name }}"
+    FLASK_APP: "app.py"
+    LC_ALL: en_US.utf-8
+    LANG: en_US.utf-8
+  changed_when: false
+
+- name: Create backend.service
+  template:
+    src: backend.service.j2
+    dest: /etc/systemd/system/backend.service
+    owner: "{{ backend_app_user }}"
+    mode: 0644
+
+- name: Fix config.py
+  template:
+    src: config.py.j2
+    dest: "{{ deploy_helper.new_release_path }}/config.py"
+    owner: "{{ backend_app_user }}"
+    mode: 0644
