@@ -1,6 +1,0 @@
----
-- hosts: app
-  become: yes
-
-  roles:
-    - install_backend
